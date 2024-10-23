@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('file:///C:/Users/Sridhar/Desktop/im2.webp'); /* Ensure this path is correct */
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 300px; /* Increased width for better proportion */
+            box-sizing: border-box; /* Ensure padding is included in total width */
+            text-align: center; /* Center text inside the calculator */
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+
+        #display {
+            width: 100%;
+            height: 60px;
+            font-size: 32px;
+            text-align: right;
+            margin-bottom: 20px;
+            border: 2px solid #00796b;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f1f8e9;
+            box-sizing: border-box; /* Ensure padding is included in total width */
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        button {
+            height: 50px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.3s;
+            background-color: #1976d2;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        button[data-value="C"] {
+            background-color: #e53935;
+        }
+        button[data-value="C"]:hover {
+            background-color: #c62828;
+        }
+
+        button[data-value="="] {
+            background-color: #43a047;
+        }
+        button[data-value="="]:hover {
+            background-color: #388e3c;
+        }
+
+        button[data-value="/"],
+        button[data-value="*"],
+        button[data-value="-"],
+        button[data-value="+"] {
+            background-color: #3949ab;
+        }
+        button[data-value="/"]:hover,
+        button[data-value="*"]:hover,
+        button[data-value="-"]:hover,
+        button[data-value="+"]:hover {
+            background-color: #303f9f;
+        }
+
+        #message, #error-message {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        #message {
+            background-color: #dcedc8; /* Success color */
+            color: #33691e;
+        }
+
+        #error-message {
+            background-color: #ef5350; /* Error color */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Calculator</h1>
+        <input type="text" id="display" disabled />
+        <div class="buttons">
+            <button data-value="C">C</button>
+            <button data-value="/">/</button>
+            <button data-value="*">*</button>
+            <button data-value="-">-</button>
+            <button data-value="7">7</button>
+            <button data-value="8">8</button>
+            <button data-value="9">9</button>
+            <button data-value="+">+</button>
+            <button data-value="4">4</button>
+            <button data-value="5">5</button>
+            <button data-value="6">6</button>
+            <button data-value="=">=</button>
+            <button data-value="1">1</button>
+            <button data-value="2">2</button>
+            <button data-value="3">3</button>
+            <button data-value="0">0</button>
+        </div>
+        <div id="message">Calculation successful. Thank you!</div>
+        <div id="error-message">Invalid calculation. Please try again.</div>
+    </div>
+    <script>
+        const display = document.getElementById("display");
+        const buttons = document.querySelectorAll("button");
+        const message = document.getElementById("message");
+        const errorMessage = document.getElementById("error-message");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+                const value = button.getAttribute("data-value");
+                
+                if (value === "C") {
+                    clearDisplay();
+                } else if (value === "=") {
+                    calculate();
+                } else {
+                    appendToDisplay(value);
+                }
+            });
+        });
+
+        function appendToDisplay(value) {
+            display.value += value;
+            errorMessage.style.display = 'none'; // Hide error message when inputting
+        }
+
+        function clearDisplay() {
+            display.value = '';
+            message.style.display = 'none'; // Hide message when clearing
+            errorMessage.style.display = 'none'; // Hide error message when clearing
+        }
+
+        function calculate() {
+            try {
+                const result = eval(display.value);
+                display.value = result;
+                showMessage(); // Show success message
+                errorMessage.style.display = 'none'; // Hide error message if successful
+            } catch (error) {
+                display.value = "Error";
+                showError(); // Show error message
+            }
+        }
+
+        function showMessage() {
+            message.style.display = 'block'; // Show message
+            setTimeout(() => {
+                message.style.display = 'none'; // Hide after 3 seconds
+            }, 3000);
+        }
+
+        function showError() {
+            errorMessage.style.display = 'block'; // Show error message
+            setTimeout(() => {
+                errorMessage.style.display = 'none'; // Hide after 3 seconds
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
